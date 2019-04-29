@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script type="text/javascript" src="assets/js/lib/paper-full.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.core.min.js"></script>
+	<link rel="stylesheet" href="assets/css/patap.css">
+	
+	<script type="text/paperscript" canvas="myCanvas">
+	// Create a Paper.js Path to draw a line into it:
+
+var keyData = {
+			q: {
+				sound: new Howl({
+		  		src: ['assets/sounds/bubbles.mp3']
+				}),
+				color: '#1abc9c'
+			},
+			w: {
+				sound: new Howl({
+		  		src: ['assets/sounds/clay.mp3']
+				}),
+				color: '#2ecc71'
+			},
+			e: {
+				sound: new Howl({
+		  		src: ['assets/sounds/confetti.mp3']
+				}),
+				color: '#3498db'
+			},
+			r: {
+				sound: new Howl({
+		  		src: ['assets/sounds/corona.mp3']
+				}),
+				color: '#9b59b6'
+			},
+				t: {
+				sound: new Howl({
+		  		src: ['assets/sounds/dotted-spiral.mp3']
+				}),
+				color: '#34495e'
+			},
+			y: {
+				sound: new Howl({
+		  		src: ['assets/sounds/flash-1.mp3']
+				}),
+				color: '#16a085'
+			},
+			u: {
+				sound: new Howl({
+		  		src: ['assets/sounds/flash-2.mp3']
+				}),
+				color: '#27ae60'
+			},
+			i: {
+				sound: new Howl({
+		  		src: ['assets/sounds/flash-3.mp3']
+				}),
+				color: '#2980b9'
+			},
+			o: {
+				sound: new Howl({
+					src: ['assets/sounds/glimmer.mp3']
+				}),
+				color: '#8e44ad'
+			},
+			p: {
+				sound: new Howl({
+		  		src: ['assets/sounds/moon.mp3']
+				}),
+				color: '#2c3e50'
+			},
+			a: {
+				sound: new Howl({
+		  		src: ['assets/sounds/pinwheel.mp3']
+				}),
+				color: '#f1c40f'
+			},
+			s: {
+				sound: new Howl({
+		  		src: ['assets/sounds/piston-1.mp3']
+				}),
+				color: '#e67e22'
+			},
+				d: {
+				sound: new Howl({
+		  		src: ['assets/sounds/piston-2.mp3']
+				}),
+				color: '#e74c3c'
+			},
+			f: {
+				sound: new Howl({
+		  		src: ['assets/sounds/prism-1.mp3']
+				}),
+				color: '#95a5a6'
+			},
+			g: {
+				sound: new Howl({
+		  		src: ['assets/sounds/prism-2.mp3']
+				}),
+				color: '#f39c12'
+			},
+			h: {
+				sound: new Howl({
+		  		src: ['assets/sounds/prism-3.mp3']
+				}),
+				color: '#d35400'
+			},
+			j: {
+				sound: new Howl({
+		  		src: ['assets/sounds/splits.mp3']
+				}),
+				color: '#1abc9c'
+			},
+			k: {
+				sound: new Howl({
+		  		src: ['assets/sounds/squiggle.mp3']
+				}),
+				color: '#2ecc71'
+			},
+			l: {
+				sound: new Howl({
+		  		src: ['assets/sounds/strike.mp3']
+				}),
+				color: '#3498db'
+			},
+			z: {
+				sound: new Howl({
+		  		src: ['assets/sounds/suspension.mp3']
+				}),
+				color: '#9b59b6'
+			},
+			x: {
+				sound: new Howl({
+		  		src: ['assets/sounds/timer.mp3']
+				}),
+				color: '#34495e'
+			},
+			c: {
+				sound: new Howl({
+		  		src: ['assets/sounds/ufo.mp3']
+				}),
+				color: '#16a085'
+			},
+			v: {
+				sound: new Howl({
+		  		src: ['assets/sounds/veil.mp3']
+				}),
+				color: '#27ae60'
+			},
+			b: {
+				sound: new Howl({
+		  		src: ['assets/sounds/wipe.mp3']
+				}),
+				color: '#2980b9'
+			},
+			n: {
+				sound: new Howl({
+					src: ['assets/sounds/zig-zag.mp3']
+				}),
+				color: '#8e44ad'
+			},
+			m: {
+				sound: new Howl({
+		  		src: ['assets/sounds/moon.mp3']
+				}),
+				color: '#2c3e50'
+			}
+		}
+
+	var circles = [];
+	
+function onKeyDown(event) {
+if(keyData[event.key]){
+	var maxPoint = new Point(view.size.width, view.size.height);
+	var randomPoint = Point.random(); //it equal to math.random(), match.random() it's just another complex paper.js function
+	var point = maxPoint * randomPoint;
+/*	 we have to multiply our max point as we have to ensure when we minimize the window it will change(lower) width property so we can see the actual point*/
+	var newCircle = new Path.Circle(point, 500)
+	newCircle.fillColor = keyData[event.key].color;
+	keyData[event.key].sound.play();
+	circles.push(newCircle);
+		}
+	}
+
+
+function onFrame(event){
+  for(var i = 0; i < circles.length; i++){
+    circles[i].scale(0.9);
+    circles[i].fillColor.hue += 1;
+    if(circles[i].area < 1){
+      circles[i].remove(); // remove the circle from the canvas
+      circles.splice(i, 1); // remove the circle from the array
+      console.log(circles);
+    }
+  }
+}
+
+	/*	if(event.key === "a"){
+	sound1.play();
+	newCircle.fillColor = "purple"
+	}
+	else if(event.key === "s"){
+	sound2.play();
+	newCircle.fillColor = "#16a085"
+	}else{
+	newCircle.fillColor = "black"
+	}
+	it's really not the best idea as we won't have if statement for each key.... keep it DRY!!*/
+
+	
+//in refference found on website, shows us where the actuall circle is sat on website
+
+
+//Exercistes, staff to learn
+//Section 235/236
+
+	/*for(var x = 0; x < 1000; x+=100 ){
+	for(var y = 0; y < 1000; y+=100 ){
+		new Path.Circle(new Point(x, y), 10).fillColor = 'purple';
+	}
+}*/
+//section 234 Circle exercise
+/*X|Y 
+0 0
+0 100
+0 200
+0 300 
+...
+0 900
+100 0
+200 0
+...
+900 900
+The End
+Symulation of loop above*/
+
+/*	var squarePath = new Path.Rectangle(new Point(0, 0), new Size(10, 10));
+squarePath.fillColor = 'aquamarine';
+var squareSymbol = new Symbol(squarePath);
+
+// lets place some squares using symbols, and rotate each instance slightly
+
+for (var i = 0; i < 100; i++) {
+  var placedSymbol = squareSymbol.place(new Point(i * 100 + (i * 10), 0));
+  squareSymbol.place(new Point(i * 100 + (i * 10), 0));
+}*/
+
+</script>
+<meta charset="UTF-8">
+<title>Patap</title>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+</body>
+</html>
